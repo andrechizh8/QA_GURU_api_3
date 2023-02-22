@@ -6,23 +6,23 @@ from selene.support.shared import browser
 from allure import step
 
 load_dotenv()
-browser.config.base_url = "https://demowebshop.tricentis.com/"
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def demoshop():
     demoshop_session = BaseSession(os.getenv("API_URL"))
     return demoshop_session
 
 
-@pytest.fixture(scope="session")
-def reqres():
-    reqres_session = BaseSession(os.getenv("REQ_URL"))
-    return reqres_session
+@pytest.fixture(scope='session')
+def regres():
+    reqress_session = BaseSession(os.getenv("REQ_URL"))
+    return reqress_session
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def browser_auth(demoshop):
+    browser.config.base_url = "https://demowebshop.tricentis.com/"
     response = demoshop.post("login", json=
 
     {
@@ -32,9 +32,6 @@ def browser_auth(demoshop):
                              allow_redirects=False
                              )
     auth_cookie = response.cookies.get("NOPCOMMERCE.AUTH")
-
-    with step("Assert status code"):
-        response.status_code = 302
 
     browser.open("Themes/DefaultClean/Content/images/star-x-active.png")
     browser.driver.add_cookie({"name": "NOPCOMMERCE.AUTH", "value": auth_cookie})
