@@ -15,7 +15,7 @@ def demoshop():
 
 
 @pytest.fixture(scope='session')
-def regres():
+def reqres():
     reqress_session = BaseSession(os.getenv("REQ_URL"))
     return reqress_session
 
